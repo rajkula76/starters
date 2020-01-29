@@ -38,6 +38,19 @@ app.post('/api/posts', verifyToken, (req, res) => {
     });
 });
 
+app.post('/api/users', verifyToken, (req, res) => {
+    jwt.verify(req.token, 'somesecretword', (err, authData) => {
+        if (err) {
+            res.sendStatus(403);
+        } else {
+            res.json({
+                message: '[POST] - Show some users',
+                authData
+            });
+        }
+    });
+});
+
 
 // Functions
 function verifyToken(req, res, next) {
