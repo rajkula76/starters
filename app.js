@@ -1,6 +1,8 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 
+const secret_word = 'somesecretword';
+
 const app = express();
 
 app.post('/api/login', (req, res) => {
@@ -11,7 +13,7 @@ app.post('/api/login', (req, res) => {
     };
 
     // async authorization
-    jwt.sign({ user }, 'somesecretword', { expiresIn: '30s' }, (err, token) => {
+    jwt.sign({ user }, secret_word, { expiresIn: '30s' }, (err, token) => {
         // expiresIn must be STRING in form 30s (30 seconds), '2 days', '10h'
         res.json({
             token
@@ -26,7 +28,7 @@ app.get('/api', (req, res) => {
 });
 
 app.post('/api/posts', verifyToken, (req, res) => {
-    jwt.verify(req.token, 'somesecretword', (err, authData) => {
+    jwt.verify(req.token, secret_word, (err, authData) => {
         if (err) {
             res.sendStatus(403);
         } else {
